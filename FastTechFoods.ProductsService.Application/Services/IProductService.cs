@@ -1,5 +1,4 @@
 ﻿using FastTechFoods.ProductsService.Application.Dtos;
-using FastTechFoods.ProductsService.Application.InputModels;
 using FastTechFoods.ProductsService.Domain.Enums;
 using FastTechFoods.SDK.Abstraction;
 
@@ -10,8 +9,5 @@ namespace FastTechFoods.ProductsService.Application.Services
         Task<Result<List<ProductDto>>> GetAllAsync();
         Task<Result<ProductDto>> GetByIdAsync(Guid id);
         Task<Result<List<ProductDto>>> GetByTypeAsync(ProductTypeEnum productType);
-        Task<Result> CreateAsync(CreateOrEditProductInputModel model);
-        Task<Result> UpdateAsync(CreateOrEditProductInputModel model);
-        Task<Result> DeleteAsync(Guid id);
     }
 }

@@ -13,6 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTechFoods.ProductsServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTechFoods.ProductsService.Infrastructure", "FastTechFoods.ProductsService.Infrastructure\FastTechFoods.ProductsService.Infrastructure.csproj", "{7B2A151A-9D30-449D-8DD1-C7E2E9BFC724}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTechFoods.ProductsService.Tests", "FastTechFoods.ProductsService.Tests\FastTechFoods.ProductsService.Tests.csproj", "{06157136-4DF8-4248-ADCB-4DE7DBCA02EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +47,10 @@ Global
 		{7B2A151A-9D30-449D-8DD1-C7E2E9BFC724}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B2A151A-9D30-449D-8DD1-C7E2E9BFC724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B2A151A-9D30-449D-8DD1-C7E2E9BFC724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06157136-4DF8-4248-ADCB-4DE7DBCA02EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06157136-4DF8-4248-ADCB-4DE7DBCA02EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06157136-4DF8-4248-ADCB-4DE7DBCA02EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06157136-4DF8-4248-ADCB-4DE7DBCA02EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

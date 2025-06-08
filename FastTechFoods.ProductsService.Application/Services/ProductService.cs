@@ -1,5 +1,4 @@
 ﻿using FastTechFoods.ProductsService.Application.Dtos;
-using FastTechFoods.ProductsService.Application.InputModels;
 using FastTechFoods.ProductsService.Domain.Entities;
 using FastTechFoods.ProductsService.Domain.Enums;
 using FastTechFoods.SDK.Abstraction;
@@ -18,7 +17,7 @@ namespace FastTechFoods.ProductsService.Application.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Type = p.Type,
+                    ProductType = p.ProductType,
                     Price = p.Price
                 }).ToList();
 
@@ -54,46 +53,6 @@ namespace FastTechFoods.ProductsService.Application.Services
                 }).ToList();
 
             return Result<List<ProductDto>>.Success(result);
-        }
-
-        public async Task<Result> CreateAsync(CreateOrEditProductInputModel model)
-        {
-            var product = new Product(model.Name, model.ProductType, model.Price, model.Description, model.Availability);
-
-            await unitOfWork.Repository<Product>().AddAsync(product);
-            await unitOfWork.CommitAsync();
-
-            return Result.Success();
-        }
-
-        public async Task<Result> UpdateAsync(CreateOrEditProductInputModel model)
-        {
-            var repo = unitOfWork.Repository<Product>();
-            var existing = await repo.GetByIdAsync(model.Id);
-
-            if (existing == null)
-                return Result.Failure("Produto não encontrado.");
-
-            existing.Update(model.Name, model.ProductType, model.Price, model.Description);
-
-            repo.Update(existing);
-            await unitOfWork.CommitAsync();
-
-            return Result.Success();
-        }
-
-        public async Task<Result> DeleteAsync(Guid id)
-        {
-            var repo = unitOfWork.Repository<Product>();
-            var existing = await repo.GetByIdAsync(id);
-
-            if (existing == null)
-                return Result.Failure("Produto não encontrado.");
-
-            repo.Remove(existing);
-            await unitOfWork.CommitAsync();
-
-            return Result.Success();
         }
     }
 }
