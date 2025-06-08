@@ -1,6 +1,7 @@
 ﻿using FastTechFoods.ProductsService.Application.Dtos;
 using FastTechFoods.ProductsService.Application.InputModels;
 using FastTechFoods.ProductsService.Application.Services;
+using FastTechFoods.ProductsService.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastTechFoods.ProductsService.API.Controllers
@@ -20,24 +21,24 @@ namespace FastTechFoods.ProductsService.API.Controllers
         {
             var result = await productService.GetAllAsync();
 
-            if (result.Data == null || !result.Data.Any())
+            if (result?.Data == null || !result.Data.Any())
                 return NotFound();
 
             return Ok(result.Data);
         }
 
         /// <summary>
-        /// Retorna produtos filtrados por tipo de refeição (ex: lanche, sobremesa, bebida).
+        /// Retorna produtos filtrados por tipo de refeição (ex: Drink, dessert, Snack, Meal).
         /// </summary>
         [HttpGet("filter-by-type")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(typeof(List<ProductDto>))]
-        public async Task<IActionResult> GetByType([FromQuery] string type)
+        public async Task<IActionResult> GetByType([FromQuery] ProductTypeEnum type)
         {
             var result = await productService.GetByTypeAsync(type);
 
-            if (result.Data == null || !result.Data.Any())
+            if (result?.Data == null || !result.Data.Any())
                 return NotFound();
 
             return Ok(result.Data);

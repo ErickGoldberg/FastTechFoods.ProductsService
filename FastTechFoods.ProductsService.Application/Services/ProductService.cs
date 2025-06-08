@@ -1,6 +1,7 @@
 ﻿using FastTechFoods.ProductsService.Application.Dtos;
 using FastTechFoods.ProductsService.Application.InputModels;
 using FastTechFoods.ProductsService.Domain.Entities;
+using FastTechFoods.ProductsService.Domain.Enums;
 using FastTechFoods.SDK.Abstraction;
 using FastTechFoods.SDK.Persistence.Repository;
 
@@ -34,21 +35,21 @@ namespace FastTechFoods.ProductsService.Application.Services
             {
                 Id = product.Id,
                 Name = product.Name,
-                Type = product.Type,
+                ProductType = product.ProductType,
                 Price = product.Price
             });
         }
 
-        public async Task<Result<List<ProductDto>>> GetByTypeAsync(string type)
+        public async Task<Result<List<ProductDto>>> GetByTypeAsync(ProductTypeEnum productType)
         {
-            var products = await unitOfWork.Repository<Product>().FindAsync(p => p.Type == type);
+            var products = await unitOfWork.Repository<Product>().FindAsync(p => p.ProductType == productType);
 
             var result = products
                 .Select(p => new ProductDto
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Type = p.Type,
+                    ProductType = p.ProductType,
                     Price = p.Price
                 }).ToList();
 
@@ -57,7 +58,7 @@ namespace FastTechFoods.ProductsService.Application.Services
 
         public async Task<Result> CreateAsync(CreateOrEditProductInputModel model)
         {
-            var product = new Product(model.Name, model.Type, model.Price);
+            var product = new Product(model.Name, model.ProductType, model.Price, model.Description, model.Availability);
 
             await unitOfWork.Repository<Product>().AddAsync(product);
             await unitOfWork.CommitAsync();
@@ -73,7 +74,7 @@ namespace FastTechFoods.ProductsService.Application.Services
             if (existing == null)
                 return Result.Failure("Produto não encontrado.");
 
-            existing.Update(model.Name, model.Type, model.Price);
+            existing.Update(model.Name, model.ProductType, model.Price, model.Description);
 
             repo.Update(existing);
             await unitOfWork.CommitAsync();

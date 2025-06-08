@@ -1,28 +1,47 @@
-﻿using FastTechFoods.SDK.Domain;
+﻿using FastTechFoods.ProductsService.Domain.Enums;
+using FastTechFoods.SDK.Domain;
 
 namespace FastTechFoods.ProductsService.Domain.Entities
 {
     public class Product : BaseEntity
     {
-        public string Name { get; private set; } 
-        public string Type { get; private set; }
+        public string Name { get; private set; }
+        public ProductTypeEnum ProductType { get; private set; }
         public decimal Price { get; private set; }
+        public string Description { get; private set; }
+        public AvailabilityStatusEnum Availability { get; private set; }
 
-        // Construtor para o E.F
         protected Product() { }
 
-        public Product(string name, string type, decimal price)
+        public Product(string name, ProductTypeEnum productType, decimal price, string description, AvailabilityStatusEnum availability)
         {
             Name = name;
-            Type = type;
+            ProductType = productType;
             Price = price;
+            Description = description;
+            Availability = availability;
         }
 
-        public void Update(string name, string type, decimal price)
+        public void Update(string name, ProductTypeEnum productType, decimal price, string description)
         {
-            Name = name;
-            Type = type;
-            Price = price;
+            if (!string.IsNullOrWhiteSpace(name))
+                Name = name;
+
+            if (!string.IsNullOrWhiteSpace(name))
+                Description = description;
+
+            if (price != decimal.MinValue)
+                Price = price;
+
+            if (productType != ProductTypeEnum.None)
+                ProductType = productType;
+
+            UpdatedAt = DateTime.Now;
+        }
+
+        public void ChangeAvailability(AvailabilityStatusEnum statusEnum)
+        {
+            Availability = statusEnum;
             UpdatedAt = DateTime.Now;
         }
     }
