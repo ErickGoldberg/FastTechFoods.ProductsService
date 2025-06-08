@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FastTechFoods.SDK\FastTechFoods\FastTechFoods.SDK\FastTechFoods.SDK.csproj" />
     <ProjectReference Include="..\FastTechFoods.ProductsService.Application\FastTechFoods.ProductsService.Application.csproj" />
     <ProjectReference Include="..\FastTechFoods.ProductsService.Infrastructure\FastTechFoods.ProductsService.Infrastructure.csproj" />
+    <ProjectReference Include="..\FastTechFoods.SDK\FastTechFoods.SDK.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,7 +18,7 @@ services:
     depends_on:
       - sqlserver
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=FastTechProductsDb;User Id=sa;Password=Your_password123;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Products;User Id=sa;Password=Your_password123;
     ports:
       - "5001:80"
     networks:

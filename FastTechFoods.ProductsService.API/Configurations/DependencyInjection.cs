@@ -8,12 +8,9 @@ namespace FastTechFoods.ProductsService.API.Configurations
     {
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var sqlConnection = configuration.GetConnectionString("SqlServer")!;
-            var mongoConnection = configuration.GetConnectionString("Mongo")!;
+            var sqlConnection = configuration.GetConnectionString("SqlServer");
 
-            services
-                .AddSqlContext<ProductsDbContext>(sqlConnection)
-                .AddMongoConnection(mongoConnection);
+            services.AddSqlContext<ProductsDbContext>(sqlConnection);
 
             services.AddScoped<IProductService, ProductService>();
 

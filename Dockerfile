@@ -9,7 +9,7 @@ COPY FastTechFoods.ProductsService.API/FastTechFoods.ProductsService.API.csproj 
 COPY FastTechFoods.ProductsService.Application/FastTechFoods.ProductsService.Application.csproj FastTechFoods.ProductsService.Application/
 COPY FastTechFoods.ProductsService.Domain/FastTechFoods.ProductsService.Domain.csproj FastTechFoods.ProductsService.Domain/
 COPY FastTechFoods.ProductsService.Infrastructure/FastTechFoods.ProductsService.Infrastructure.csproj FastTechFoods.ProductsService.Infrastructure/
-COPY ../FastTechFoods.SDK/FastTechFoods.SDK/FastTechFoods.SDK.csproj FastTechFoods.SDK/
+COPY FastTechFoods.SDK/FastTechFoods.SDK.csproj FastTechFoods.SDK/
 
 RUN dotnet restore FastTechFoods.ProductsService.API/FastTechFoods.ProductsService.API.csproj
 
