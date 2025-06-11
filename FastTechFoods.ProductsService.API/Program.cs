@@ -8,6 +8,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+if (builder.Environment.IsProduction())
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(80); 
+    });
+}
+
 // Registro das dependências customizadas
 builder.Services.AddServices(builder.Configuration);
 
