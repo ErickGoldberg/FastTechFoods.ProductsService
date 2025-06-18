@@ -11,6 +11,11 @@
             return new Result(true, message);
         }
 
+        public static Result Created(string message = "Created.")
+        {
+            return new Result(true, message);
+        }
+
         public static Result Failure(string message = "Failure.")
         {
             return new Result(false, message);

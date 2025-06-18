@@ -1,17 +1,13 @@
 version: '3.8'
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Your_password123
-      - MSSQL_PID=Express
+  mongo:
+    image: mongo:7.0
+    container_name: mongo
     ports:
-      - "1433:1433"
+      - "27017:27017"
     volumes:
-      - sqlserverdata:/var/opt/mssql
+      - mongo_data:/data/db
     networks:
       - fasttech-network
 
@@ -23,15 +19,15 @@ services:
     ports:
       - "5001:80"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=DB_Products;User Id=sa;Password=Your_password123;TrustServerCertificate=true
+      - ConnectionStrings__MongoDb=mongodb://mongo:27017/FastTechFoods-ProductsDB
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
-      - sqlserver
+      - mongo
     networks:
       - fasttech-network
 
 volumes:
-  sqlserverdata:
+  mongo_data:
 
 networks:
   fasttech-network:
