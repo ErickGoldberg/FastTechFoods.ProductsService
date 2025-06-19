@@ -43,6 +43,20 @@ namespace FastTechFoods.ProductsService.API.Controllers
             return Ok(result.Data);
         }
 
+        [HttpPost("getProductsList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Produces(typeof(List<ProductDto>))]
+        public async Task<IActionResult> getProductsList([FromBody] List<Guid> id)
+        {
+            var result = await productService.GetListProductsAsync(id);
+
+            if(!result.IsSuccess)
+                return BadRequest(result.Message);
+
+            return Ok(result.Data);
+        }
+
         /// <summary>
         /// Retorna produtos filtrados por tipo de refeição (ex: Drink, dessert, Snack, Meal).
         /// </summary>

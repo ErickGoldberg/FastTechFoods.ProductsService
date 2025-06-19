@@ -37,6 +37,29 @@ namespace FastTechFoods.ProductsService.Application.Services
             });
         }
 
+        public async Task<Result<List<ProductDto>>> GetListProductsAsync(List<Guid> ids)
+        {
+            if (ids == null || !ids.Any())
+                return Result<List<ProductDto>>.Failure("Lista de IDs não pode ser nula ou vazia.");
+
+            var products = await productRepository.GetListAsync(ids.Select(x => x.ToString()).ToList());
+
+            var mappedProducts = products
+                .Select(product => new ProductDto
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    ProductType = product.ProductType,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Availability = 1000 // Assuming a default value for availability
+
+                })
+                .ToList();
+
+            return Result<List<ProductDto>>.Success(mappedProducts);
+        }
+
         public async Task<Result<List<ProductDto>>> GetByTypeAsync(ProductTypeEnum productType)
         {
             var products = await productRepository.FindAsync(p => p.ProductType == productType);

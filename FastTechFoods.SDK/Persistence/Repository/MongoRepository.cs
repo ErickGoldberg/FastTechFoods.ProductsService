@@ -14,6 +14,12 @@ namespace FastTechFoods.SDK.Persistence.Repository
             return await _collection.Find(filter).FirstOrDefaultAsync();
         }
 
+        public async Task<List<T>> GetListAsync(List<string> ids)
+        {
+            var filter = Builders<T>.Filter.In("Id", ids);
+            return await _collection.Find(filter).ToListAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _collection.Find(_ => true).ToListAsync();
