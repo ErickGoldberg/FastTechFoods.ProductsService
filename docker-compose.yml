@@ -11,10 +11,26 @@ services:
     networks:
       - fasttech-network
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - fasttech-network
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
   products-api-read:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        PROJECT: api
     container_name: products-api-read
     ports:
       - "5001:80"
@@ -23,6 +39,24 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - mongo
+      - rabbitmq
+    networks:
+      - fasttech-network
+
+  products-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROJECT: worker
+    container_name: products-worker
+    environment:
+      - ConnectionStrings__MongoDb=mongodb://mongo:27017/FastTechFoods-ProductsDB
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     networks:
       - fasttech-network
 

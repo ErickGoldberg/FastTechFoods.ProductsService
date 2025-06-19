@@ -4,6 +4,7 @@ namespace FastTechFoods.ProductsService.Application.Dtos
 {
     public class ProductInputModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public ProductTypeEnum ProductType { get; set; }
         public decimal Price { get; set; }

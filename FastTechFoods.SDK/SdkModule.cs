@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Exceptions;
 
 namespace FastTechFoods.SDK
 {
@@ -50,14 +51,29 @@ namespace FastTechFoods.SDK
                 Password = password
             };
 
-            var connection = factory.CreateConnection();
-            services.AddSingleton(connection);
+            IConnection? connection = null;
+            int attempts = 5;
 
-            services.AddScoped<IModel>(sp =>
+            for (int i = 1; i <= attempts; i++)
             {
-                var conn = sp.GetRequiredService<IConnection>();
-                return conn.CreateModel(); 
-            });
+                try
+                {
+                    connection = factory.CreateConnection();
+                    Console.WriteLine($"[RabbitMQ] Conectado com sucesso na tentativa {i}.");
+                    break;
+                }
+                catch (BrokerUnreachableException ex)
+                {
+                    Console.WriteLine($"[RabbitMQ] Tentativa {i}/{attempts} falhou: {ex.Message}. Retentando em 5 segundos...");
+                    Thread.Sleep(5000);
+                }
+            }
+
+            if (connection is null)
+                throw new Exception("[RabbitMQ] Falha ao conectar após múltiplas tentativas.");
+
+            services.AddSingleton(connection);
+            services.AddSingleton<IModel>(sp => connection.CreateModel());
 
             return services;
         }

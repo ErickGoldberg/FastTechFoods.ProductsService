@@ -1,6 +1,7 @@
 ﻿using FastTechFoods.ProductsService.Application.Services;
 using FastTechFoods.ProductsService.Domain.Entities;
 using FastTechFoods.SDK;
+using FastTechFoods.SDK.MessageBus;
 
 namespace FastTechFoods.ProductsService.API.Configurations
 {
@@ -13,6 +14,7 @@ namespace FastTechFoods.ProductsService.API.Configurations
             services.AddMongoRepository<Product>("Products");
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IEventSubscriber, RabbitMqEventSubscriber>();
 
             return services;
         }
