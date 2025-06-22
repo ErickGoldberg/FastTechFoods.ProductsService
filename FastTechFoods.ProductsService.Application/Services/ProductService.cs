@@ -52,7 +52,7 @@ namespace FastTechFoods.ProductsService.Application.Services
                     ProductType = product.ProductType,
                     Description = product.Description,
                     Price = product.Price,
-                    Availability = 1000 // Assuming a default value for availability
+                    IsAvailable = product.Availability == AvailabilityStatusEnum.Available
 
                 })
                 .ToList();
