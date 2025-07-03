@@ -32,12 +32,13 @@ jobs:
 
       - name: Add GitHub Package source
         run: |
+          dotnet nuget remove source github || true
           dotnet nuget add source \
-            --username ErickGoldberg \
-            --password ${{ secrets.NUGET_GITHUB_TOKEN }} \
-            --store-password-in-clear-text \
-            --name github \
-            https://nuget.pkg.github.com/caiofabiogomes/index.json
+          --username ErickGoldberg \
+          --password ${{ secrets.NUGET_GITHUB_TOKEN }} \
+          --store-password-in-clear-text \
+          --name github \
+          https://nuget.pkg.github.com/caiofabiogomes/index.json
 
       - name: Restore and Build Solution
         run: |
