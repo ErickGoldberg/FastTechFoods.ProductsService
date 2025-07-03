@@ -30,6 +30,15 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Add GitHub Package source
+        run: |
+          dotnet nuget add source \
+            --username ErickGoldberg \
+            --password ${{ secrets.NUGET_GITHUB_TOKEN }} \
+            --store-password-in-clear-text \
+            --name github \
+            https://nuget.pkg.github.com/caiofabiogomes/index.json
+
       - name: Restore and Build Solution
         run: |
           dotnet restore ${{ env.Solution_Name }}
