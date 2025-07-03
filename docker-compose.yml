@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile
       args:
         PROJECT: api
-    container_name: products-api-read
+    container_name: fasttechfoods-productsservice-api
     ports:
       - "5001:80"
     environment:
@@ -49,7 +49,7 @@ services:
       dockerfile: Dockerfile
       args:
         PROJECT: worker
-    container_name: products-worker
+    container_name: fasttechfoods-productsservice-worker
     environment:
       - ConnectionStrings__MongoDb=mongodb://mongo:27017/FastTechFoods-ProductsDB
     depends_on:

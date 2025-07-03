@@ -1,11 +1,11 @@
-﻿using FastTechFoods.SDK.Middleware;
+﻿using FastTechFoods.SDK.MessageBus;
+using FastTechFoods.SDK.Middleware;
 using FastTechFoods.SDK.Persistence.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Exceptions;
 
 namespace FastTechFoods.SDK
 {
@@ -35,45 +35,25 @@ namespace FastTechFoods.SDK
             return services;
         }
 
-        public static IServiceCollection AddRabbitMqConnectionAsync(
-            this IServiceCollection services,
-            string hostName,
-            string userName,
-            string password,
-            int port = 5672
-        )
+        public static IServiceCollection AddRabbitMqEventSubscriber(this IServiceCollection services)
         {
-            var factory = new ConnectionFactory
+            services.AddSingleton<IConnection>(sp =>
             {
-                HostName = hostName,
-                Port = port,
-                UserName = userName,
-                Password = password
-            };
+                var factory = new ConnectionFactory
+                {
+                    HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost"
+                };
 
-            IConnection? connection = null;
-            int attempts = 5;
+                return factory.CreateConnection();
+            });
 
-            for (int i = 1; i <= attempts; i++)
+            services.AddSingleton<IModel>(sp =>
             {
-                try
-                {
-                    connection = factory.CreateConnection();
-                    Console.WriteLine($"[RabbitMQ] Conectado com sucesso na tentativa {i}.");
-                    break;
-                }
-                catch (BrokerUnreachableException ex)
-                {
-                    Console.WriteLine($"[RabbitMQ] Tentativa {i}/{attempts} falhou: {ex.Message}. Retentando em 5 segundos...");
-                    Thread.Sleep(5000);
-                }
-            }
+                var connection = sp.GetRequiredService<IConnection>();
+                return connection.CreateModel();
+            });
 
-            if (connection is null)
-                throw new Exception("[RabbitMQ] Falha ao conectar após múltiplas tentativas.");
-
-            services.AddSingleton(connection);
-            services.AddSingleton<IModel>(sp => connection.CreateModel());
+            services.AddSingleton<IEventSubscriber, RabbitMqEventSubscriber>();
 
             return services;
         }

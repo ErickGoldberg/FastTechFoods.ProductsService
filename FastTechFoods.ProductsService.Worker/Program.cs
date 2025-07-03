@@ -2,20 +2,23 @@ using FastTechFoods.ProductsService.Application.Services;
 using FastTechFoods.ProductsService.Domain.Entities;
 using FastTechFoods.ProductsService.Worker;
 using FastTechFoods.SDK;
-using FastTechFoods.SDK.MessageBus;
 
 var builder = Host.CreateApplicationBuilder(args);
 var config = builder.Configuration;
 
-builder.Services.AddMongoConnection(config.GetConnectionString("MongoDb"));
-builder.Services.AddMongoRepository<Product>("Products");
+var mongoConnection = Environment.GetEnvironmentVariable("MONGO_DB_CONNECTION")
+                      ?? config.GetConnectionString("MongoDb");
+
+if (!string.IsNullOrWhiteSpace(mongoConnection))
+{
+    builder.Services.AddMongoConnection(mongoConnection);
+    builder.Services.AddMongoRepository<Product>("Products");
+}
 
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddSingleton<IEventSubscriber, RabbitMqEventSubscriber>();
 
-builder.Services.AddRabbitMqConnectionAsync("rabbitmq", "guest", "guest");
-
-builder.Services.AddHostedService<ProductConsumer>();
+builder.Services.AddRabbitMqEventSubscriber();
+builder.Services.AddMessaging();
 
 var host = builder.Build();
 host.Run();

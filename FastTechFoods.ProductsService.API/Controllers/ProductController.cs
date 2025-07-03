@@ -1,6 +1,7 @@
 ﻿using FastTechFoods.ProductsService.Application.Dtos;
 using FastTechFoods.ProductsService.Application.Services;
 using FastTechFoods.ProductsService.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastTechFoods.ProductsService.API.Controllers
@@ -13,6 +14,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         /// Retorna todos os produtos disponíveis.
         /// </summary>
         [HttpGet]
+        [Authorize(Roles = "Cliente")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(typeof(List<ProductDto>))]
@@ -30,6 +32,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         /// Retorna os detalhes de um produto específico pelo ID.
         /// </summary>
         [HttpGet("{id:guid}")]
+        [Authorize(Roles = "Cliente")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(typeof(ProductDto))]
@@ -44,6 +47,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         }
 
         [HttpPost("getProductsList")]
+        [Authorize(Roles = "Atendente")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(typeof(List<ProductDto>))]
@@ -61,6 +65,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         /// Retorna produtos filtrados por tipo de refeição (ex: Drink, dessert, Snack, Meal).
         /// </summary>
         [HttpGet("filter-by-type")]
+        [Authorize(Roles = "Cliente")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(typeof(List<ProductDto>))]
@@ -78,6 +83,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         /// Cria um novo produto.
         /// </summary>
         [HttpPost]
+        [Authorize(Roles = "Atendente")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] ProductInputModel dto)
@@ -94,6 +100,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         /// Atualiza um produto existente.
         /// </summary>
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Atendente")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(Guid id, [FromBody] ProductInputModel dto)
@@ -110,6 +117,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         /// Remove um produto.
         /// </summary>
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Gerente")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id)
