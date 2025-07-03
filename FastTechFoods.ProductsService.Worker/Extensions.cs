@@ -11,11 +11,18 @@ namespace FastTechFoods.ProductsService.Worker
 
             services.AddMassTransit(x =>
             {
+                x.AddConsumer<ProductEventConsumer>();
+
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Message<CreateProductEvent>(x =>
                     {
                         x.SetEntityName("create-product-event");
+                    });
+
+                    cfg.ReceiveEndpoint("product-event-queue", e =>
+                    {
+                        e.ConfigureConsumer<ProductEventConsumer>(context);
                     });
 
                     cfg.Host(envHostRabbitMqServer);
