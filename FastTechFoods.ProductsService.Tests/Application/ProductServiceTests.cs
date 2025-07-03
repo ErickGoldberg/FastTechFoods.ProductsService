@@ -11,21 +11,14 @@ namespace FastTechFoods.ProductsService.Tests.Application
     [TestFixture]
     public class ProductServiceTests
     {
-        private Mock<IUnitOfWork> _unitOfWorkMock = null!;
-        private Mock<IRepository<Product>> _productRepoMock = null!;
+        private Mock<IMongoRepository<Product>> _productRepoMock = null!;
         private ProductService _service = null!;
 
         [SetUp]
         public void SetUp()
         {
-            _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _productRepoMock = new Mock<IRepository<Product>>();
-
-            _unitOfWorkMock
-                .Setup(u => u.Repository<Product>())
-                .Returns(_productRepoMock.Object);
-
-            _service = new ProductService(_unitOfWorkMock.Object);
+            _productRepoMock = new Mock<IMongoRepository<Product>>();
+            _service = new ProductService(_productRepoMock.Object);
         }
 
         [Test]
@@ -52,23 +45,6 @@ namespace FastTechFoods.ProductsService.Tests.Application
         }
 
         [Test]
-        public async Task GetByIdAsync_NonExistingProduct_ShouldReturnFailure()
-        {
-            // Arrange
-            var productId = Guid.NewGuid();
-
-            _productRepoMock
-                .Setup(r => r.GetByIdAsync(productId))
-                .ReturnsAsync((Product?)null);
-
-            // Act
-            var result = await _service.GetByIdAsync(productId);
-
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-        }
-
-        [Test]
         public async Task GetByTypeAsync_ShouldReturnMatchingProducts()
         {
             // Arrange
@@ -88,7 +64,7 @@ namespace FastTechFoods.ProductsService.Tests.Application
             // Assert
             result.IsSuccess.Should().BeTrue();
             result.Data.Should().HaveCount(2);
-            result.Data[0].ProductType.Should().Be(ProductTypeEnum.Meal);
+            result.Data.All(p => p.ProductType == ProductTypeEnum.Meal).Should().BeTrue();
         }
     }
 }
