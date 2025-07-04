@@ -12,6 +12,7 @@ COPY FastTechFoods.ProductsService.Worker/*.csproj FastTechFoods.ProductsService
 COPY FastTechFoods.ProductsService.Application/*.csproj FastTechFoods.ProductsService.Application/
 COPY FastTechFoods.ProductsService.Domain/*.csproj FastTechFoods.ProductsService.Domain/
 COPY FastTechFoods.ProductsService.Infrastructure/*.csproj FastTechFoods.ProductsService.Infrastructure/
+COPY FastTechFoods.ProductsService.Tests/*.csproj FastTechFoods.ProductsService.Tests/
 COPY FastTechFoods.SDK/*.csproj FastTechFoods.SDK/
 
 COPY nuget.config ./
