@@ -5,6 +5,8 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+COPY FastTechFoods.ProductsService.sln ./
+
 COPY FastTechFoods.ProductsService.API/*.csproj FastTechFoods.ProductsService.API/
 COPY FastTechFoods.ProductsService.Worker/*.csproj FastTechFoods.ProductsService.Worker/
 COPY FastTechFoods.ProductsService.Application/*.csproj FastTechFoods.ProductsService.Application/
