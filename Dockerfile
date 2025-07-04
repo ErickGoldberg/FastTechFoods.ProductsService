@@ -1,5 +1,3 @@
-# Dockerfile 
-
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -16,8 +14,16 @@ COPY FastTechFoods.SDK/*.csproj FastTechFoods.SDK/
 
 COPY nuget.config ./
 
-RUN dotnet restore FastTechFoods.ProductsService.API/FastTechFoods.ProductsService.API.csproj
-RUN dotnet restore FastTechFoods.ProductsService.Worker/FastTechFoods.ProductsService.Worker.csproj
+ARG NUGET_TOKEN
+
+RUN dotnet nuget add source \
+    --username ErickGoldberg \
+    --password $NUGET_TOKEN \
+    --store-password-in-clear-text \
+    --name github \
+    https://nuget.pkg.github.com/caiofabiogomes/index.json
+
+RUN dotnet restore FastTechFoods.ProductsService.sln
 
 COPY . .
 
