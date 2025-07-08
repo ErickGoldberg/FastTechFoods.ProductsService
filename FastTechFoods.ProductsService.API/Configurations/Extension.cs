@@ -31,30 +31,22 @@ namespace FastTechFoods.ProductsService.API.Configurations
         {
             var jwtKey = configuration["Jwt:Key"];
 
-            if (!string.IsNullOrWhiteSpace(jwtKey))
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
             {
-                services
-                    .AddAuthentication(options =>
-                    {
-                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
-                    .AddJwtBearer("Bearer", options =>
-                    {
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuer = false,
-                            ValidateAudience = false,
-                            ValidateLifetime = true,
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(
-                                Encoding.ASCII.GetBytes(jwtKey)
-                            )
-                        };
-                    });
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.ASCII.GetBytes(jwtKey)
+                    )
+                };
+            });
 
-                services.AddAuthorization();
-            }
+            services.AddAuthorization();
 
             return services;
         }
