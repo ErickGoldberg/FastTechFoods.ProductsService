@@ -5,18 +5,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY FastTechFoods.ProductsService.sln ./
-
-COPY FastTechFoods.ProductsService.API/*.csproj FastTechFoods.ProductsService.API/
-COPY FastTechFoods.ProductsService.Application/*.csproj FastTechFoods.ProductsService.Application/
-COPY FastTechFoods.ProductsService.Domain/*.csproj FastTechFoods.ProductsService.Domain/
-COPY FastTechFoods.ProductsService.Infrastructure/*.csproj FastTechFoods.ProductsService.Infrastructure/
-COPY FastTechFoods.ProductsService.Tests/*.csproj FastTechFoods.ProductsService.Tests/
-COPY FastTechFoods.SDK/*.csproj FastTechFoods.SDK/
-COPY FastTechFoods.ProductsService.API/appsettings.json ./api/appsettings.json
-
-
-COPY nuget.config ./
+COPY . .
 
 ARG NUGET_TOKEN
 
@@ -31,14 +20,11 @@ RUN dotnet restore FastTechFoods.ProductsService.sln
 
 COPY . .
 
-RUN dotnet publish FastTechFoods.ProductsService.API/FastTechFoods.ProductsService.API.csproj -c Release -o /app/publish-api
+RUN dotnet publish FastTechFoods.ProductsService.API/FastTechFoods.ProductsService.API.csproj -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 
-ARG PROJECT=api
-ENV PROJECT=$PROJECT
+COPY --from=build /app/publish ./
 
-COPY --from=build /app/publish-api ./api
-COPY FastTechFoods.ProductsService.API/appsettings.json ./api/appsettings.json
 CMD ["dotnet", "./api/FastTechFoods.ProductsService.API.dll"]
