@@ -1,7 +1,6 @@
 ﻿using FastTechFoods.ProductsService.Application.Services;
 using FastTechFoods.ProductsService.Domain.Entities;
 using FastTechFoods.SDK;
-using FastTechFoods.SDK.MessageBus;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -21,7 +20,6 @@ namespace FastTechFoods.ProductsService.API.Configurations
             }
 
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IEventSubscriber, RabbitMqEventSubscriber>();
 
             return services;
         }

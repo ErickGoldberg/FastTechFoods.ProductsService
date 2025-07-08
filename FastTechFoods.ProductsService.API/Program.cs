@@ -19,7 +19,6 @@ if (builder.Environment.IsProduction())
 // Registro das dependências customizadas
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddAutentication(builder.Configuration);
-builder.Services.AddRabbitMqEventSubscriber();
 
 var app = builder.Build();
 

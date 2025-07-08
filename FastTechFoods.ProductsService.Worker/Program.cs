@@ -17,7 +17,6 @@ if (!string.IsNullOrWhiteSpace(mongoConnection))
 
 builder.Services.AddScoped<IProductService, ProductService>();
 
-builder.Services.AddRabbitMqEventSubscriber();
 builder.Services.AddMessaging();
 
 var host = builder.Build();

@@ -5,7 +5,7 @@ using OrderService.Contracts.Events;
 
 namespace FastTechFoods.ProductsService.Worker;
 
-public class ProductEventConsumer(IProductService productService) : IConsumer<CreateProductEvent>
+public class CreateProductEventConsumer(IProductService productService) : IConsumer<CreateProductEvent>
 {
     public async Task Consume(ConsumeContext<CreateProductEvent> context)
     {
@@ -14,13 +14,11 @@ public class ProductEventConsumer(IProductService productService) : IConsumer<Cr
         var productInputModel = MapToInputModel(message);
 
         var existing = await productService.GetByIdAsync(productInputModel.Id);
-        if (existing.IsSuccess)
-            await productService.UpdateAsync(productInputModel.Id, productInputModel);
-        else
+        if (!existing.IsSuccess) 
             await productService.CreateAsync(productInputModel);
     }
 
-    public static ProductInputModel MapToInputModel(CreateProductEvent message)
+    private static ProductInputModel MapToInputModel(CreateProductEvent message)
     {
         return new ProductInputModel
         {

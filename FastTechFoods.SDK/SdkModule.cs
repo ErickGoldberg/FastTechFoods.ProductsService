@@ -1,11 +1,9 @@
-﻿using FastTechFoods.SDK.MessageBus;
-using FastTechFoods.SDK.Middleware;
+﻿using FastTechFoods.SDK.Middleware;
 using FastTechFoods.SDK.Persistence.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using RabbitMQ.Client;
 
 namespace FastTechFoods.SDK
 {
@@ -31,29 +29,6 @@ namespace FastTechFoods.SDK
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddRabbitMqEventSubscriber(this IServiceCollection services)
-        {
-            services.AddSingleton<IConnection>(sp =>
-            {
-                var factory = new ConnectionFactory
-                {
-                    HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost"
-                };
-
-                return factory.CreateConnection();
-            });
-
-            services.AddSingleton<IModel>(sp =>
-            {
-                var connection = sp.GetRequiredService<IConnection>();
-                return connection.CreateModel();
-            });
-
-            services.AddSingleton<IEventSubscriber, RabbitMqEventSubscriber>();
 
             return services;
         }

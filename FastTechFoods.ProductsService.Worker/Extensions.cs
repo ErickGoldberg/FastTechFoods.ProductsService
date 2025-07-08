@@ -7,22 +7,29 @@ namespace FastTechFoods.ProductsService.Worker
     {
         public static IServiceCollection AddMessaging(this IServiceCollection services)
         {
-            var envHostRabbitMqServer = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+            var envHostRabbitMqServer = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rabbitmq://localhost:31001";
 
             services.AddMassTransit(x =>
             {
-                x.AddConsumer<ProductEventConsumer>();
+                x.AddConsumer<CreateProductEventConsumer>();
+                x.AddConsumer<DeleteProductEventConsumer>();
+                x.AddConsumer<UpdateProductEventConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Message<CreateProductEvent>(x =>
+                    cfg.ReceiveEndpoint("create-product-event", e =>
                     {
-                        x.SetEntityName("create-product-event");
-                    });
-
-                    cfg.ReceiveEndpoint("product-event-queue", e =>
+                        e.ConfigureConsumer<CreateProductEventConsumer>(context);
+                    }); 
+                    
+                    cfg.ReceiveEndpoint("delete-product-event", e =>
                     {
-                        e.ConfigureConsumer<ProductEventConsumer>(context);
+                        e.ConfigureConsumer<DeleteProductEventConsumer>(context);
+                    }); 
+                    
+                    cfg.ReceiveEndpoint("update-product-event", e =>
+                    {
+                        e.ConfigureConsumer<UpdateProductEventConsumer>(context);
                     });
 
                     cfg.Host(envHostRabbitMqServer);

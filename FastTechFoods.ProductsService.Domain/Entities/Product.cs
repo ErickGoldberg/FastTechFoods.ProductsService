@@ -13,8 +13,9 @@ namespace FastTechFoods.ProductsService.Domain.Entities
 
         protected Product() { }
 
-        public Product(string name, ProductTypeEnum productType, decimal price, string description, AvailabilityStatusEnum availability)
+        public Product(Guid id, string name, ProductTypeEnum productType, decimal price, string description, AvailabilityStatusEnum availability)
         {
+            Id = id;
             Name = name;
             ProductType = productType;
             Price = price;

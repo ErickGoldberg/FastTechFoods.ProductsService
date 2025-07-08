@@ -77,6 +77,7 @@ namespace FastTechFoods.ProductsService.Application.Services
         public async Task<Result> CreateAsync(ProductInputModel dto)
         {
             var product = new Product(
+                id : dto.Id,
                 name: dto.Name,
                 productType: dto.ProductType,
                 price: dto.Price,
