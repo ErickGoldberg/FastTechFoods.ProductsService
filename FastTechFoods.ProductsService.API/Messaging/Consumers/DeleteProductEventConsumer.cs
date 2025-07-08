@@ -1,9 +1,8 @@
-﻿using FastTechFoods.ProductsService.Application.Dtos;
-using FastTechFoods.ProductsService.Application.Services;
+﻿using FastTechFoods.ProductsService.Application.Services;
 using MassTransit;
 using OrderService.Contracts.Events;
 
-namespace FastTechFoods.ProductsService.Worker
+namespace FastTechFoods.ProductsService.API.Messaging.Consumers
 {
     public class DeleteProductEventConsumer(IProductService productService) : IConsumer<DeleteProductEvent>
     {
@@ -12,7 +11,7 @@ namespace FastTechFoods.ProductsService.Worker
             var message = context.Message;
 
             var existing = await productService.GetByIdAsync(message.Id);
-            
+
             if (existing.IsSuccess)
                 await productService.DeleteAsync(message.Id);
         }

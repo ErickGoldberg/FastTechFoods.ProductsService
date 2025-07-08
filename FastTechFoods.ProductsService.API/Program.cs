@@ -1,3 +1,4 @@
+using FastTechFoods.ProductsService.API;
 using FastTechFoods.ProductsService.API.Configurations;
 using FastTechFoods.SDK;
 
@@ -18,6 +19,7 @@ if (builder.Environment.IsProduction())
 
 // Registro das dependências customizadas
 builder.Services.AddServices(builder.Configuration);
+builder.Services.AddMessaging();
 builder.Services.AddAutentication(builder.Configuration);
 
 var app = builder.Build();

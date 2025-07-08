@@ -3,7 +3,7 @@ using FastTechFoods.ProductsService.Application.Services;
 using MassTransit;
 using OrderService.Contracts.Events;
 
-namespace FastTechFoods.ProductsService.Worker
+namespace FastTechFoods.ProductsService.API.Messaging.Consumers
 {
     public class UpdateProductEventConsumer(IProductService productService) : IConsumer<UpdateProductEvent>
     {
@@ -14,7 +14,7 @@ namespace FastTechFoods.ProductsService.Worker
             var productInputModel = MapToInputModel(message);
 
             var existing = await productService.GetByIdAsync(productInputModel.Id);
-            
+
             if (existing.IsSuccess)
                 await productService.UpdateAsync(productInputModel.Id, productInputModel);
         }
