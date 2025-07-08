@@ -13,6 +13,8 @@ COPY FastTechFoods.ProductsService.Domain/*.csproj FastTechFoods.ProductsService
 COPY FastTechFoods.ProductsService.Infrastructure/*.csproj FastTechFoods.ProductsService.Infrastructure/
 COPY FastTechFoods.ProductsService.Tests/*.csproj FastTechFoods.ProductsService.Tests/
 COPY FastTechFoods.SDK/*.csproj FastTechFoods.SDK/
+COPY FastTechFoods.ProductsService.API/appsettings.json ./api/appsettings.json
+
 
 COPY nuget.config ./
 
