@@ -40,5 +40,5 @@ ARG PROJECT=api
 ENV PROJECT=$PROJECT
 
 COPY --from=build /app/publish-api ./api
-
+COPY FastTechFoods.ProductsService.API/appsettings.json ./api/appsettings.json
 CMD ["dotnet", "./api/FastTechFoods.ProductsService.API.dll"]
