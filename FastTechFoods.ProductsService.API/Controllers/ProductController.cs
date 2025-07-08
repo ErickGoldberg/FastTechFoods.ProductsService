@@ -47,7 +47,7 @@ namespace FastTechFoods.ProductsService.API.Controllers
         }
 
         [HttpPost("getProductsList")]
-        [Authorize(Roles = "Atendente")]
+        [Authorize(Roles = "Cliente")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces(typeof(List<ProductDto>))]
@@ -77,57 +77,6 @@ namespace FastTechFoods.ProductsService.API.Controllers
                 return NotFound();
 
             return Ok(result.Data);
-        }
-
-        /// <summary>
-        /// Cria um novo produto.
-        /// </summary>
-        [HttpPost]
-        [Authorize(Roles = "Atendente")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] ProductInputModel dto)
-        {
-            var result = await productService.CreateAsync(dto);
-
-            if (!result.IsSuccess)
-                return BadRequest(result.Message);
-
-            return Created();
-        }
-
-        /// <summary>
-        /// Atualiza um produto existente.
-        /// </summary>
-        [HttpPut("{id:guid}")]
-        [Authorize(Roles = "Atendente")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(Guid id, [FromBody] ProductInputModel dto)
-        {
-            var result = await productService.UpdateAsync(id, dto);
-
-            if (!result.IsSuccess)
-                return NotFound(result.Message);
-
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Remove um produto.
-        /// </summary>
-        [HttpDelete("{id:guid}")]
-        [Authorize(Roles = "Gerente")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var result = await productService.DeleteAsync(id);
-
-            if (!result.IsSuccess)
-                return NotFound(result.Message);
-
-            return NoContent();
         }
     }
 }

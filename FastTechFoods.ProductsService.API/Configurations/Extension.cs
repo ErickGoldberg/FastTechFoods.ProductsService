@@ -1,7 +1,9 @@
-﻿using FastTechFoods.ProductsService.Application.Services;
+﻿using FastTechFoods.ProductsService.API.Messaging.Consumers;
+using FastTechFoods.ProductsService.Application.Services;
 using FastTechFoods.ProductsService.Domain.Entities;
 using FastTechFoods.SDK;
-using FastTechFoods.SDK.MessageBus;
+using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -21,7 +23,6 @@ namespace FastTechFoods.ProductsService.API.Configurations
             }
 
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IEventSubscriber, RabbitMqEventSubscriber>();
 
             return services;
         }
@@ -32,7 +33,12 @@ namespace FastTechFoods.ProductsService.API.Configurations
 
             if (!string.IsNullOrWhiteSpace(jwtKey))
             {
-                services.AddAuthentication("Bearer")
+                services
+                    .AddAuthentication(options =>
+                    {
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
                     .AddJwtBearer("Bearer", options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
@@ -49,6 +55,40 @@ namespace FastTechFoods.ProductsService.API.Configurations
 
                 services.AddAuthorization();
             }
+
+            return services;
+        }
+
+        public static IServiceCollection AddMessaging(this IServiceCollection services)
+        {
+            var envHostRabbitMqServer = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rabbitmq://localhost:31001";
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<CreateProductEventConsumer>();
+                x.AddConsumer<DeleteProductEventConsumer>();
+                x.AddConsumer<UpdateProductEventConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ReceiveEndpoint("create-product-event", e =>
+                    {
+                        e.ConfigureConsumer<CreateProductEventConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint("delete-product-event", e =>
+                    {
+                        e.ConfigureConsumer<DeleteProductEventConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint("update-product-event", e =>
+                    {
+                        e.ConfigureConsumer<UpdateProductEventConsumer>(context);
+                    });
+
+                    cfg.Host(envHostRabbitMqServer);
+                });
+            });
 
             return services;
         }
