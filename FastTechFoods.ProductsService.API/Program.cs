@@ -4,7 +4,9 @@ using FastTechFoods.SDK;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
+// .
+builder.Services.AddAutentication(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -12,7 +14,7 @@ builder.Services.AddSwaggerGen();
 // Registro das dependências customizadas
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddMessaging();
-builder.Services.AddAutentication(builder.Configuration);
+
 
 var app = builder.Build();
 
