@@ -18,7 +18,7 @@ namespace FastTechFoods.ProductsService.Tests.Domain
             var availability = AvailabilityStatusEnum.Available;
 
             // Act
-            var product = new Product(name, type, price, description, availability);
+            var product = new Product(Guid.NewGuid(), name, type, price, description, availability);
 
             // Assert
             product.Name.Should().Be(name);
@@ -32,7 +32,7 @@ namespace FastTechFoods.ProductsService.Tests.Domain
         public void Update_ValidParams_ShouldUpdateFields()
         {
             // Arrange
-            var product = new Product("Old", ProductTypeEnum.Dessert, 10m, "Old Desc", AvailabilityStatusEnum.Available);
+            var product = new Product(Guid.NewGuid(), "Old", ProductTypeEnum.Dessert, 10m, "Old Desc", AvailabilityStatusEnum.Available);
             var newName = "New Burger";
             var newType = ProductTypeEnum.Drink;
             var newPrice = 12.99m;
@@ -53,7 +53,7 @@ namespace FastTechFoods.ProductsService.Tests.Domain
         public void Update_InvalidParams_ShouldNotUpdateFields()
         {
             // Arrange
-            var original = new Product("Original", ProductTypeEnum.Drink, 10m, "Desc", AvailabilityStatusEnum.Available);
+            var original = new Product(Guid.NewGuid(), "Original", ProductTypeEnum.Drink, 10m, "Desc", AvailabilityStatusEnum.Available);
             var updatedAtBefore = original.UpdatedAt;
 
             // Act
@@ -71,7 +71,7 @@ namespace FastTechFoods.ProductsService.Tests.Domain
         public void ChangeAvailability_ShouldUpdateAvailabilityAndTimestamp()
         {
             // Arrange
-            var product = new Product("Item", ProductTypeEnum.Drink, 10m, "Desc", AvailabilityStatusEnum.Available);
+            var product = new Product(Guid.NewGuid(), "Item", ProductTypeEnum.Drink, 10m, "Desc", AvailabilityStatusEnum.Available);
             var newStatus = AvailabilityStatusEnum.OutOfStock;
 
             // Act

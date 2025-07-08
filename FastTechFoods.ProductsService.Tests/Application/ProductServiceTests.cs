@@ -27,8 +27,8 @@ namespace FastTechFoods.ProductsService.Tests.Application
             // Arrange
             var products = new List<Product>
             {
-                new("Item A", ProductTypeEnum.Meal, 10m, "desc", AvailabilityStatusEnum.Available),
-                new("Item B", ProductTypeEnum.Drink, 20m, "desc", AvailabilityStatusEnum.Available)
+                new(Guid.NewGuid(), "Item A", ProductTypeEnum.Meal, 10m, "desc", AvailabilityStatusEnum.Available),
+                new(Guid.NewGuid(), "Item B", ProductTypeEnum.Drink, 20m, "desc", AvailabilityStatusEnum.Available)
             };
 
             _productRepoMock
@@ -50,8 +50,8 @@ namespace FastTechFoods.ProductsService.Tests.Application
             // Arrange
             var products = new List<Product>
             {
-                new("Item A", ProductTypeEnum.Meal, 12m, "desc", AvailabilityStatusEnum.Available),
-                new("Item B", ProductTypeEnum.Meal, 14m, "desc", AvailabilityStatusEnum.Available)
+                new(Guid.NewGuid(), "Item A", ProductTypeEnum.Meal, 12m, "desc", AvailabilityStatusEnum.Available),
+                new(Guid.NewGuid(), "Item B", ProductTypeEnum.Meal, 14m, "desc", AvailabilityStatusEnum.Available)
             };
 
             _productRepoMock
