@@ -94,4 +94,3 @@ namespace FastTechFoods.ProductsService.API.Configurations
         }
     }
 }
-}
