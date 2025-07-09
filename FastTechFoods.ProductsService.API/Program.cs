@@ -1,4 +1,3 @@
-using FastTechFoods.ProductsService.API;
 using FastTechFoods.ProductsService.API.Configurations;
 using FastTechFoods.SDK;
 
